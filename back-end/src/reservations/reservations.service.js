@@ -1,22 +1,22 @@
 const knex = require("../db/connection");
 
-const tableName = "reservations";
+const reservName = "reservations";
 
-function list(date) {
+const list = (date) => {
   // if a date argument was passed in, we apply that search restriction
   if (date) {
-    return knex(tableName)
+    return knex(reservName)
       .select("*")
       .where({ reservation_date: date })
       .orderBy("reservation_time");
   }
   // otherwise, just return all the reservations
-  return knex(tableName).select("*");
-}
+  return knex(reservName).select("*");
+};
 
-function create(reservation) {
-  return knex(tableName).insert(reservation).returning("*");
-}
+const create = (reservation) => {
+  return knex(reservName).insert(reservation).returning("*");
+};
 
 module.exports = {
   list,
