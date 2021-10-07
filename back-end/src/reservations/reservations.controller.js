@@ -134,6 +134,7 @@ async function create(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
+  read,
   create: [
     asyncErrorBoundary(validateData),
     asyncErrorBoundary(validateBody),
