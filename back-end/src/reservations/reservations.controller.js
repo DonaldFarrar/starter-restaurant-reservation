@@ -116,7 +116,14 @@ async function validateDate(req, res, next) {
 
 async function list(req, res) {
   const date = req.query.date;
-  const data = await service.list(date);
+  const mobile_number = req.query.mobile_number;
+
+  const reservations = await service.list(date, mobile_number);
+
+  const data = reservations.filter(
+    (reservation) => reservation.status !== "finished"
+  );
+
   res.json({ data });
 }
 

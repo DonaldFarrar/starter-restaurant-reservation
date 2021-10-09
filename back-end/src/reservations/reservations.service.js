@@ -14,6 +14,13 @@ const list = (date) => {
   return knex(reservName).select("*");
 };
 
+const read = (reservation_id) => {
+  return knex(reservName)
+    .select("*")
+    .where({ reservation_id: reservation_id })
+    .first();
+};
+
 const create = (reservation) => {
   return knex(reservName).insert(reservation).returning("*");
 };
@@ -21,4 +28,5 @@ const create = (reservation) => {
 module.exports = {
   list,
   create,
+  read,
 };
