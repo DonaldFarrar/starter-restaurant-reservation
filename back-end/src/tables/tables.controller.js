@@ -133,8 +133,10 @@ function validateTableSeating(req, res, next) {
 }
 
 async function create(req, res, next) {
-  const newTable = await service.create(req.body.data);
-  res.status(201).json({ data: newTable });
+  const newTable = { ...req.body.data };
+  newTable.status = "booked";
+  const data = await service.create(newTable);
+  res.status(201).json({ data });
 }
 
 async function updateTable(req, res, next) {
@@ -147,7 +149,7 @@ async function list(req, res, next) {
   res.json({ data: await service.list() });
 }
 
-async function validateOccupation(req, res, next) {
+async function validateAvailability(req, res, next) {
   const table_id = Number(req.params.table_id);
   const table = await service.readTable(table_id);
 
@@ -157,7 +159,7 @@ async function validateOccupation(req, res, next) {
   } else {
     next({
       status: 400,
-      message: `Table is not occupied.`,
+      message: `Table is not available.`,
     });
   }
 }
@@ -188,7 +190,7 @@ module.exports = {
   ],
   delete: [
     asyncErrorBoundary(tableExists),
-    asyncErrorBoundary(validateOccupation),
+    asyncErrorBoundary(validateAvailability),
     asyncErrorBoundary(destroy),
   ],
   list: asyncErrorBoundary(list),

@@ -4,6 +4,7 @@ const tableName = "tables";
 const reservName = "reservations";
 
 function create(table) {
+  console.log("table =====>", table);
   return knex(tableName)
     .insert(table)
     .returning("*")
