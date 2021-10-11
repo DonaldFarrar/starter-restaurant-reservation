@@ -1,4 +1,5 @@
 const service = require("./tables.service");
+const resService = require("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 const validateData = (req, res, next) => {

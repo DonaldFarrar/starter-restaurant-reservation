@@ -78,7 +78,7 @@ async function validateDate(req, res, next) {
     });
   }
 
-  if (reserveDate < todaysDate) {
+  if (todaysDate > reserveDate) {
     return next({
       status: 400,
       message:
@@ -120,6 +120,58 @@ async function validateDate(req, res, next) {
   next();
 }
 
+async function validateUpdateBody(req, res, next) {
+  if (!req.body.data.status) {
+    return next({ status: 400, message: "body must include a status field" });
+  }
+
+  if (
+    req.body.data.status !== "booked" &&
+    req.body.data.status !== "seated" &&
+    req.body.data.status !== "finished" &&
+    req.body.data.status !== "cancelled"
+  ) {
+    return next({
+      status: 400,
+      message: `'status' field cannot be ${req.body.data.status}`,
+    });
+  }
+
+  if (res.locals.reservation.status === "finished") {
+    return next({
+      status: 400,
+      message: `a finished reservation cannot be updated`,
+    });
+  }
+
+  next();
+}
+
+async function validateReservationId(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(Number(reservation_id));
+
+  if (!reservation) {
+    return next({
+      status: 404,
+      message: `reservation id ${reservation_id} does not exist`,
+    });
+  }
+
+  res.locals.reservation = reservation;
+
+  next();
+}
+
+async function update(req, res) {
+  await service.update(
+    res.locals.reservation.reservation_id,
+    req.body.data.status
+  );
+
+  res.status(200).json({ data: { status: req.body.data.status } });
+}
+
 async function list(req, res) {
   const date = req.query.date;
   const mobile_number = req.query.mobile_number;
@@ -133,10 +185,17 @@ async function list(req, res) {
   res.json({ data });
 }
 
+async function edit(req, res) {
+  const data = await service.edit(
+    res.locals.reservation.reservation_id,
+    req.body.data
+  );
+
+  res.status(200).json({ data: data[0] });
+}
+
 async function read(req, res) {
-  const { reservation_Id } = req.params;
-  const data = await service.read(reservation_Id);
-  res.status(200).res.json({ data });
+  res.status(200).json({ data: res.locals.reservation });
 }
 
 async function create(req, res) {
@@ -147,11 +206,24 @@ async function create(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  read,
   create: [
     asyncErrorBoundary(validateData),
     asyncErrorBoundary(validateBody),
     asyncErrorBoundary(validateDate),
     asyncErrorBoundary(create),
   ],
+  update: [
+    asyncErrorBoundary(validateData),
+    asyncErrorBoundary(validateReservationId),
+    asyncErrorBoundary(validateUpdateBody),
+    asyncErrorBoundary(update),
+  ],
+  edit: [
+    asyncErrorBoundary(validateData),
+    asyncErrorBoundary(validateReservationId),
+    asyncErrorBoundary(validateBody),
+    asyncErrorBoundary(validateDate),
+    asyncErrorBoundary(edit),
+  ],
+  read: [asyncErrorBoundary(validateReservationId), asyncErrorBoundary(read)],
 };
