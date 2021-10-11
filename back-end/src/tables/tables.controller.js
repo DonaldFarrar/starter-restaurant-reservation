@@ -51,6 +51,7 @@ function hasData(req, res, next) {
   }
 }
 
+//checks for reservation id and if it matches..... if no reservation is found throws error
 async function resExists(req, res, next) {
   const { reservation_id } = req.body.data;
   if (!reservation_id) {
@@ -71,6 +72,7 @@ async function resExists(req, res, next) {
   }
 }
 
+//checks for table id and if it matches..... if no table is found throws error
 async function tableExists(req, res, next) {
   const table_id = Number(req.params.table_id);
   const table = await service.readTable(table_id);
@@ -164,6 +166,7 @@ async function validateAvailability(req, res, next) {
   }
 }
 
+//clears table when it has been finished with previous reservation
 async function destroy(req, res) {
   const table_id = req.params.table_id;
   const reservation_id = res.locals.table.reservation_id;

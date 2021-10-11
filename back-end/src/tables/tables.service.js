@@ -3,8 +3,9 @@ const knex = require("../db/connection");
 const tableName = "tables";
 const reservName = "reservations";
 
+//creates a table to be seated
 function create(table) {
-  console.log("table =====>", table);
+  //console.log("table =====>", table);
   return knex(tableName)
     .insert(table)
     .returning("*")
@@ -15,6 +16,7 @@ function readTable(tableId) {
   return knex(tableName).select("*").where({ table_id: tableId }).first();
 }
 
+//updates the table being sat with the current reservation
 function update(reservationId, tableId) {
   return knex(reservName)
     .where({ reservation_id: reservationId })
