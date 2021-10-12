@@ -3,7 +3,8 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time"; // these functions will give the day before, the day today, and the next day, respectively.
 import { useHistory } from "react-router-dom";
-//import NewReservation from "../reservations/NewReservation";
+import ListReservations from "./ListReservations";
+import ListTables from "./ListTables";
 
 /**
  * Defines the dashboard page.
@@ -11,9 +12,8 @@ import { useHistory } from "react-router-dom";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
+function Dashboard({ date, reservations, tables }) {
   const history = useHistory();
-  // console.log("history ===>", history);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
@@ -30,31 +30,31 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-  const listOfReservations = reservations.map((reservation, index) => {
-    return (
-      <tr id={reservation.reservation_id} key={index}>
-        <td>{reservation.first_name}</td>
-        <td>{reservation.last_name}</td>
-        <td>{reservation.mobile_number}</td>
-        <td>{reservation.reservation_date}</td>
-        <td>{reservation.reservation_time}</td>
-        <td>{reservation.people}</td>
-        <td>{reservation.status}</td>
-        <td>{reservation.seat_table}</td>
-      </tr>
-    );
-  });
+  // const listOfReservations = reservations.map((reservation, index) => {
+  //   return (
+  //     <tr id={reservation.reservation_id} key={index}>
+  //       <td>{reservation.first_name}</td>
+  //       <td>{reservation.last_name}</td>
+  //       <td>{reservation.mobile_number}</td>
+  //       <td>{reservation.reservation_date}</td>
+  //       <td>{reservation.reservation_time}</td>
+  //       <td>{reservation.people}</td>
+  //       <td>{reservation.status}</td>
+  //       <td>{reservation.seat_table}</td>
+  //     </tr>
+  //   );
+  // });
 
-  const listOfTables = tables.map((table, index) => {
-    return (
-      <tr id={table.table_id} key={index}>
-        <td>{table.table_id}</td>
-        <td>{table.table_name}</td>
-        <td>{table.table_capacity}</td>
-        <td>{table.table_status}</td>
-      </tr>
-    );
-  });
+  // const listOfTables = tables.map((table, index) => {
+  //   return (
+  //     <tr id={table.table_id} key={index}>
+  //       <td>{table.table_id}</td>
+  //       <td>{table.table_name}</td>
+  //       <td>{table.table_capacity}</td>
+  //       <td>{table.table_status}</td>
+  //     </tr>
+  //   );
+  // });
 
   return (
     <main>
@@ -77,26 +77,15 @@ function Dashboard({ date }) {
               <th className="border-top-0">Seat Table</th>
             </tr>
           </thead>
-          <tbody>{listOfReservations}</tbody>
+          {/* <tbody>{listOfReservations}</tbody> */}
         </table>
       </div>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Tables</h4>
       </div>
       <ErrorAlert error={tablesError} />
-      <div className="table-responsive">
-        <table className="table no-wrap">
-          <thead>
-            <tr>
-              <th className="border-top-0">ID</th>
-              <th className="border-top-0">Table Name</th>
-              <th className="border-top-0">Capacity</th>
-              <th className="border-top-0">Status</th>
-            </tr>
-          </thead>
-          <tbody>{listOfTables}</tbody>
-        </table>
-      </div>
+      <ListTables />
+
       <button
         type="button"
         className="btn btn-secondary"
