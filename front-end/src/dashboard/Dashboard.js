@@ -16,6 +16,8 @@ function Dashboard({ date }) {
   // console.log("history ===>", history);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
 
   useEffect(loadDashboard, [date]);
 
@@ -37,9 +39,23 @@ function Dashboard({ date }) {
         <td>{reservation.reservation_date}</td>
         <td>{reservation.reservation_time}</td>
         <td>{reservation.people}</td>
+        <td>{reservation.status}</td>
+        <td>{reservation.seat_table}</td>
       </tr>
     );
   });
+
+  const listOfTables = tables.map((table, index) => {
+    return (
+      <tr id={table.table_id} key={index}>
+        <td>{table.table_id}</td>
+        <td>{table.table_name}</td>
+        <td>{table.table_capacity}</td>
+        <td>{table.table_status}</td>
+      </tr>
+    );
+  });
+
   return (
     <main>
       <h1>Dashboard</h1>
@@ -57,9 +73,28 @@ function Dashboard({ date }) {
               <th className="border-top-0">Reservation Date</th>
               <th className="border-top-0">Reservation Time</th>
               <th className="border-top-0">People</th>
+              <th className="border-top-0">Status</th>
+              <th className="border-top-0">Seat Table</th>
             </tr>
           </thead>
           <tbody>{listOfReservations}</tbody>
+        </table>
+      </div>
+      <div className="d-md-flex mb-3">
+        <h4 className="mb-0">Tables</h4>
+      </div>
+      <ErrorAlert error={tablesError} />
+      <div className="table-responsive">
+        <table className="table no-wrap">
+          <thead>
+            <tr>
+              <th className="border-top-0">ID</th>
+              <th className="border-top-0">Table Name</th>
+              <th className="border-top-0">Capacity</th>
+              <th className="border-top-0">Status</th>
+            </tr>
+          </thead>
+          <tbody>{listOfTables}</tbody>
         </table>
       </div>
       <button
