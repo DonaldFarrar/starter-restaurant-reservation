@@ -71,7 +71,7 @@ export async function listReservations(params, signal) {
 //ADDING THE BELOW APIS ALLOWS THE FRONTEND TO CONNECT TO THE BACKEND
 
 export async function listTables(signal) {
-  const url = `${API_BASE_URL}/table`;
+  const url = `${API_BASE_URL}/tables`;
   return await fetchJson(url, { headers, signal }, []);
 }
 

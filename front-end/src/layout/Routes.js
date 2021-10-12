@@ -17,7 +17,7 @@ import useQuery from "../utils/useQuery";
 function Routes() {
   const query = useQuery();
   const date = query.get("date");
-  //console.log("date", date);
+  console.log("date", date);
 
   return (
     <Switch>

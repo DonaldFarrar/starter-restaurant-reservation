@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
+import { createTable } from "../utils/api";
 
 export default function NewTable() {
   const history = useHistory();
   const [error, setError] = useState([]);
+  const [table, setTable] = useState([]);
   const [formData, setFormData] = useState({ table_name: "", capacity: 1 });
 
   //if any change happens to the key/values in the formData{useState} this function handles it
@@ -15,7 +17,10 @@ export default function NewTable() {
   //submit button for seating a reservation at a table// all fields must meet requirements listed in the validateFields function
   const submitButton = (event) => {
     event.preventDefault();
-    //console.log("SUBMIT");
+    const abortController = new AbortController();
+    createTable(formData, abortController.signal)
+      .then(history.push("/dashboard"))
+      .catch(setError);
     if (validateFields()) {
       history.push(`/dashboard`);
     }
