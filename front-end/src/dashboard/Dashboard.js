@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+// import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time"; // these functions will give the day before, the day today, and the next day, respectively.
 import { useHistory } from "react-router-dom";
@@ -12,23 +12,23 @@ import ListTables from "./ListTables";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date, reservations, tables }) {
+function Dashboard({ date }) {
   const history = useHistory();
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
 
-  useEffect(loadDashboard, [date]);
+  // useEffect(loadDashboard, [date]);
 
-  function loadDashboard() {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    listReservations({ date }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
-    return () => abortController.abort();
-  }
+  // function loadDashboard() {
+  //   const abortController = new AbortController();
+  //   setReservationsError(null);
+  //   listReservations({ date }, abortController.signal)
+  //     .then(setReservations)
+  //     .catch(setReservationsError);
+  //   return () => abortController.abort();
+  // }
 
   // const listOfReservations = reservations.map((reservation, index) => {
   //   return (
@@ -63,23 +63,7 @@ function Dashboard({ date, reservations, tables }) {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <div className="table-responsive">
-        <table className="table no-wrap">
-          <thead>
-            <tr>
-              <th className="border-top-0">First Name</th>
-              <th className="border-top-0">Last Name</th>
-              <th className="border-top-0">Mobile Number</th>
-              <th className="border-top-0">Reservation Date</th>
-              <th className="border-top-0">Reservation Time</th>
-              <th className="border-top-0">People</th>
-              <th className="border-top-0">Status</th>
-              <th className="border-top-0">Seat Table</th>
-            </tr>
-          </thead>
-          {/* <tbody>{listOfReservations}</tbody> */}
-        </table>
-      </div>
+      <ListReservations />
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Tables</h4>
       </div>
