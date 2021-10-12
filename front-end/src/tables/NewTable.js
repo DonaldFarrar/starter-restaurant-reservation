@@ -5,8 +5,7 @@ import { createTable } from "../utils/api";
 
 export default function NewTable() {
   const history = useHistory();
-  const [error, setError] = useState([]);
-  const [table, setTable] = useState([]);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({ table_name: "", capacity: 1 });
 
   //if any change happens to the key/values in the formData{useState} this function handles it
@@ -24,6 +23,7 @@ export default function NewTable() {
     if (validateFields()) {
       history.push(`/dashboard`);
     }
+    return () => abortController.abort();
   };
 
   const validateFields = () => {
@@ -34,7 +34,7 @@ export default function NewTable() {
       foundError = { message: "Table name has to be 2 characters long." };
     }
     setError(foundError);
-    return foundError.length !== null;
+    return !foundError;
   };
 
   return (
@@ -47,7 +47,7 @@ export default function NewTable() {
           id="table_name"
           type="text"
           minLength="2"
-          value={formData.table_name}
+          defaultValue={formData.table_name}
           onChange={changeHandler}
           required
         ></input>
@@ -57,7 +57,7 @@ export default function NewTable() {
           id="capacity"
           type="number"
           min="1"
-          value={formData.capacity}
+          defaultValue={formData.capacity}
           onChange={changeHandler}
           required
         ></input>
