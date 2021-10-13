@@ -6,22 +6,28 @@ import { createTable } from "../utils/api";
 export default function NewTable() {
   const history = useHistory();
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({ table_name: "", capacity: 1 });
+  const [formData, setFormData] = useState({ table_name: "", capacity: "" });
 
   //if any change happens to the key/values in the formData{useState} this function handles it
   const changeHandler = ({ target }) => {
-    setFormData({ ...formData, [target.name]: target.value });
+    setFormData({
+      ...formData,
+      [target.name]:
+        target.name === "capacity" ? Number(target.value) : target.value,
+    });
   };
 
   //submit button for seating a reservation at a table// all fields must meet requirements listed in the validateFields function
   const submitButton = (event) => {
     event.preventDefault();
     const abortController = new AbortController();
-    createTable(formData, abortController.signal)
-      .then(history.push("/dashboard"))
-      .catch(setError);
     if (validateFields()) {
-      history.push(`/dashboard`);
+      createTable(formData, abortController.signal)
+        .then(history.push("/dashboard"))
+        .catch(setError);
+      if (validateFields()) {
+        history.push(`/dashboard`);
+      }
     }
     return () => abortController.abort();
   };
@@ -34,7 +40,7 @@ export default function NewTable() {
       foundError = { message: "Table name has to be 2 characters long." };
     }
     setError(foundError);
-    return !foundError;
+    return foundError === null;
   };
 
   return (
@@ -47,7 +53,7 @@ export default function NewTable() {
           id="table_name"
           type="text"
           minLength="2"
-          defaultValue={formData.table_name}
+          value={formData.table_name}
           onChange={changeHandler}
           required
         ></input>
@@ -57,7 +63,7 @@ export default function NewTable() {
           id="capacity"
           type="number"
           min="1"
-          defaultValue={formData.capacity}
+          value={formData.capacity}
           onChange={changeHandler}
           required
         ></input>
