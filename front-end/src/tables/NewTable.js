@@ -49,6 +49,7 @@ export default function NewTable() {
         <ErrorAlert error={error} />
         <label htmlFor="table_name">&nbsp;Table Name:&nbsp;</label>
         <input
+          className="form-control"
           name="table_name"
           id="table_name"
           type="text"
@@ -59,10 +60,11 @@ export default function NewTable() {
         ></input>
         <label htmlFor="capacity">&nbsp;Capacity:&nbsp;</label>
         <input
+          className="form-control"
           name="capacity"
           id="capacity"
           type="number"
-          min="1"
+          min={1}
           value={formData.capacity}
           onChange={changeHandler}
           required
