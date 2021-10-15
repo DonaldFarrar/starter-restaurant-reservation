@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { listTables, finishTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { useHistory } from "react-router";
+//import { useHistory } from "react-router";
 
 export default function ListTables() {
-  const history = useHistory();
+  //const history = useHistory();
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
 
@@ -20,7 +20,7 @@ export default function ListTables() {
       const abortController = new AbortController();
       finishTable(table_id, abortController.signal)
         .then(loadTables)
-        .then(history.go(0))
+        //.then(history.go(0))
         .catch(setTablesError);
 
       return () => abortController.abort();
@@ -46,15 +46,17 @@ export default function ListTables() {
           {table.reservation_id ? "occupied" : "free"}
         </td>
         <td data-table-id-finish={table.table_id}>
-          <button
-            type="button"
-            className="btn btn-danger px-4"
-            onClick={() => {
-              handleFinish(table.table_id);
-            }}
-          >
-            Finish
-          </button>
+          {table.reservation_id && (
+            <button
+              type="button"
+              className="btn btn-danger px-4"
+              onClick={() => {
+                handleFinish(table.table_id);
+              }}
+            >
+              Finish
+            </button>
+          )}
         </td>
       </tr>
     );
