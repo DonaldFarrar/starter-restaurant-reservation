@@ -33,7 +33,7 @@ export default function SeatReservations() {
   }, []);
 
   //console.log("checking", tables, reservations);
-  //if (!tables || !reservations) return null;
+  if (!tables || !reservation) return null;
 
   const handleChange = ({ target }) => {
     setTableId(target.value);
