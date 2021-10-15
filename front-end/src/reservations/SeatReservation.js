@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import { readReservation, seatTable, listTables } from "../utils/api";
-import ListReservations from "../dashboard/ListReservations";
-import ListTables from "../dashboard/ListTables";
 
-export default function SeatReservations({}) {
+export default function SeatReservations() {
   const history = useHistory();
   const { reservation_id } = useParams();
   const [table_id, setTableId] = useState(0);
@@ -48,8 +46,8 @@ export default function SeatReservations({}) {
     if (validateSeat()) {
       seatTable(reservation_id, table_id, abortController.signal)
         //.then(loadDashboard)
-        .then(() => history.push(`/dashboard`));
-      //     .catch(setApiError);
+        .then(() => history.push(`/dashboard`))
+        .catch(setApiError);
     }
     return () => abortController.abort();
   };
@@ -101,8 +99,8 @@ export default function SeatReservations({}) {
     <>
       <form className="form-select">
         {errorsJSX()}
-        {/* <ErrorAlert error={apiError} /> */}
-        {/* <ErrorAlert error={setReservationsError} /> */}
+        <ErrorAlert error={apiError} />
+        <ErrorAlert error={setReservationError} />
         <label className="form-label" htmlFor="table_id">
           Choose table:
         </label>
@@ -132,45 +130,7 @@ export default function SeatReservations({}) {
           Cancel
         </button>
       </form>
-      <div className="d-md-flex mb-3">
-        {/* <ErrorAlert error={errors} />
-        <h4 className="mb-0">Seat Reservations</h4>
-        <ListReservations
-          reservations={reservations}
-          setReservations={setReservations}
-          setReservationsError={setReservationsError}
-        />
-        <ListTables tables={tables} /> */}
-      </div>
+      <div className="d-md-flex mb-3"></div>
     </>
   );
 }
-
-////////////STARTER/////////////////
-
-// export default function SeatReservations({ tables, reservations }) {
-//     const tableOptions = () => {
-//       return tables.map((table) => (
-//         <option value={table.table_id}>
-//           {table.table_name} - {table.capacity}
-//         </option>
-//       ));
-//     };
-//   return (
-//     <form>
-//       <label className="form-label" htmlFor="table_id">
-//         Choose table:
-//       </label>
-//       <select className="form-control" name="table_id" id="table_id">
-//         {/* {tableOptions()} */}
-//       </select>
-
-//       <button type="button" className="btn btn-secondary">
-//         Cancel
-//       </button>
-//       <button type="submit" className="btn btn-primary">
-//         Submit
-//       </button>
-//     </form>
-//   );
-// }

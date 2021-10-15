@@ -3,7 +3,6 @@ import { previous, today, next } from "../utils/date-time"; // these functions w
 import { useHistory } from "react-router-dom";
 import ListReservations from "./ListReservations";
 import ListTables from "./ListTables";
-import SeatReservations from "../reservations/SeatReservation";
 
 /**
  * Defines the dashboard page.
