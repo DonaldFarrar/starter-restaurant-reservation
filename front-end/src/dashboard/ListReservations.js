@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { Link } from "react-router-dom";
 
 export default function ListReservations({ date }) {
   const [reservations, setReservations] = useState([]);
@@ -33,9 +34,9 @@ export default function ListReservations({ date }) {
         <td>{reservation.people}</td>
         <td>{reservation.status}</td>
         <td>
-          <button type="button" className="btn btn-primary px-4">
+          <Link to={`/reservations/${reservation.reservation_id}/seat`}type="button" className="btn btn-primary px-4">
             Seat
-          </button>
+          </Link>
         </td>
         <td>
           <button type="button" className="btn btn-success px-4">

@@ -47,7 +47,6 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Tables</h4>
       </div>
       <ListTables />
-      <SeatReservations />
     </main>
   );
 }

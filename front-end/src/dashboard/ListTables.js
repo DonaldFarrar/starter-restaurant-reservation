@@ -21,7 +21,7 @@ export default function ListTables() {
         <td>{table.table_id}</td>
         <td>{table.table_name}</td>
         <td>{table.capacity}</td>
-        <td>{table.status}</td>
+        <td>{table.reservation_id ? "occupied" : "free"}</td>
       </tr>
     );
   });
