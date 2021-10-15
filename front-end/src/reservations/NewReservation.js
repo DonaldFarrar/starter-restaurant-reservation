@@ -41,7 +41,7 @@ export default function NewReservation() {
   function validateFields(foundErrors) {
     for (const field in formData) {
       //looped through the formData and if any of them are blank the message below will show
-      console.log("formData ====>", formData);
+
       if (formData[field] === "") {
         foundErrors.push({
           message: `${field.split("_").join(" ")} cannot be left blank`,

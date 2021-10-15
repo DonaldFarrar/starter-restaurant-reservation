@@ -32,7 +32,6 @@ export default function SeatReservations() {
     return () => abortController.abort();
   }, [reservation_id]);
 
-  //console.log("checking", tables, reservations);
   if (!tables || !reservation) return null;
 
   const handleChange = ({ target }) => {
@@ -58,14 +57,13 @@ export default function SeatReservations() {
     const foundTable = tables.find(
       (table) => table.table_id === Number(table_id)
     );
-    console.log("foundTable", foundTable);
     // const foundReservation = reservations.find(
     //   (reservation) => reservation.reservation_id === Number(reservation_id)
     // );
     if (!foundTable) {
       foundErrors.push("The table you selected does not exist.");
     } else if (!reservation) {
-      foundErrors.push("This reservation does not exist.");
+      foundErrors.push({ message: "This reservation does not exist." });
     } else {
       if (foundTable.reservation_id) {
         foundErrors.push({
