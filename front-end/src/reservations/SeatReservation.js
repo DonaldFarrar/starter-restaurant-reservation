@@ -30,7 +30,7 @@ export default function SeatReservations() {
       .then(setReservation)
       .catch(setReservationError);
     return () => abortController.abort();
-  }, []);
+  }, [reservation_id]);
 
   //console.log("checking", tables, reservations);
   if (!tables || !reservation) return null;
@@ -92,7 +92,9 @@ export default function SeatReservations() {
   };
 
   const errorsJSX = () => {
-    return errors.map((error, idx) => <ErrorAlert key={idx} error={error} />);
+    return errors.map((error, index) => (
+      <ErrorAlert key={index} error={error} />
+    ));
   };
 
   return (

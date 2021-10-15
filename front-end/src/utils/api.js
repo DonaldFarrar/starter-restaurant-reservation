@@ -80,6 +80,11 @@ export async function readReservation(reservation_id, signal) {
   return await fetchJson(url, { headers, signal }, []);
 }
 
+export async function finishTable(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  return await fetchJson(url, { headers, method: "DELETE", signal }, []);
+}
+
 export async function createTable(table, signal) {
   const url = `${API_BASE_URL}/tables`;
   const body = JSON.stringify({ data: table });

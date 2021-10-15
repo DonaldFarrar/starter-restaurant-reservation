@@ -89,6 +89,7 @@ async function tableExists(req, res, next) {
 
 function tableIsFree(req, res, next) {
   const occupied = res.locals.table.reservation_id;
+  //console.log("occupied ======>", occupied);
   if (occupied) {
     next({
       status: 400,
@@ -161,7 +162,7 @@ async function validateAvailability(req, res, next) {
   } else {
     next({
       status: 400,
-      message: `Table is not available.`,
+      message: `Table is not occupied.`,
     });
   }
 }
@@ -171,6 +172,7 @@ async function destroy(req, res) {
   const table_id = req.params.table_id;
   const reservation_id = res.locals.table.reservation_id;
   await service.clearTable(table_id, reservation_id);
+
   res.status(200).json({});
 }
 
