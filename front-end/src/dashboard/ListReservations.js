@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { listReservations } from "../utils/api";
+import React, { useEffect } from "react";
+//import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { Link } from "react-router-dom";
 
-export default function ListReservations({ date }) {
-  const [reservations, setReservations] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
-
-  useEffect(loadDashboard, [date]);
-
-  function loadDashboard() {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    listReservations({ date }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
-    return () => abortController.abort();
-  }
+export default function ListReservations({
+  reservations,
+  reservationsError,
+  loadDashboard,
+}) {
+  
+  useEffect(loadDashboard, [loadDashboard]);
 
   const listOfReservations = reservations.map((reservation, index) => {
     return (
@@ -34,7 +27,11 @@ export default function ListReservations({ date }) {
         <td>{reservation.people}</td>
         <td>{reservation.status}</td>
         <td>
-          <Link to={`/reservations/${reservation.reservation_id}/seat`}type="button" className="btn btn-primary px-4">
+          <Link
+            to={`/reservations/${reservation.reservation_id}/seat`}
+            type="button"
+            className="btn btn-primary px-4"
+          >
             Seat
           </Link>
         </td>

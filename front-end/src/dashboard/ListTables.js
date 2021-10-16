@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { listTables, finishTable } from "../utils/api";
+import { listTables, finishTable, listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { useHistory } from "react-router";
 
-export default function ListTables() {
-  const history = useHistory();
+export default function ListTables({ date }) {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
 
-  // window.confirm will show a dialogue that willl give an OK button or Cancel button
+  //window.confirm will show a dialogue that willl give an OK button or Cancel button
   const handleFinish = (table_id) => {
-    //console.log("table_id", table_id);
     if (
       window.confirm(
         "Is this table ready to seat new guests? This cannot be undone."
@@ -20,7 +17,7 @@ export default function ListTables() {
       const abortController = new AbortController();
       finishTable(table_id, abortController.signal)
         .then(loadTables)
-        .then(history.go(0))
+        .then(() => listReservations({ date }, abortController.signal))
         .catch(setTablesError);
 
       return () => abortController.abort();
@@ -45,9 +42,10 @@ export default function ListTables() {
         <td data-table-id-status={table.table_id}>
           {table.reservation_id ? "occupied" : "free"}
         </td>
-        <td data-table-id-finish={table.table_id}>
+        <td>
           {table.reservation_id && (
             <button
+              data-table-id-finish={table.table_id}
               type="button"
               className="btn btn-danger px-4"
               onClick={() => {
