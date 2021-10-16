@@ -55,7 +55,7 @@ async function validateBody(req, res, next) {
   if (req.body.data.people < 1) {
     return next({ status: 400, message: "'people' field must be at least 1" });
   }
-  if (req.body.data.status && req.body.status !== "booked") {
+  if (req.body.data.status && req.body.data.status !== "booked") {
     return next({
       status: 400,
       message: `'status field cannot be ${req.body.data.status}`,
