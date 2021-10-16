@@ -30,9 +30,8 @@ export default function SeatReservations() {
       .then(setReservation)
       .catch(setReservationError);
     return () => abortController.abort();
-  }, []);
+  }, [reservation_id]);
 
-  //console.log("checking", tables, reservations);
   if (!tables || !reservation) return null;
 
   const handleChange = ({ target }) => {
@@ -58,14 +57,13 @@ export default function SeatReservations() {
     const foundTable = tables.find(
       (table) => table.table_id === Number(table_id)
     );
-    console.log("foundTable", foundTable);
     // const foundReservation = reservations.find(
     //   (reservation) => reservation.reservation_id === Number(reservation_id)
     // );
     if (!foundTable) {
       foundErrors.push("The table you selected does not exist.");
     } else if (!reservation) {
-      foundErrors.push("This reservation does not exist.");
+      foundErrors.push({ message: "This reservation does not exist." });
     } else {
       if (foundTable.reservation_id) {
         foundErrors.push({
@@ -92,7 +90,9 @@ export default function SeatReservations() {
   };
 
   const errorsJSX = () => {
-    return errors.map((error, idx) => <ErrorAlert key={idx} error={error} />);
+    return errors.map((error, index) => (
+      <ErrorAlert key={index} error={error} />
+    ));
   };
 
   return (
@@ -100,31 +100,31 @@ export default function SeatReservations() {
       <form className="form-select">
         {errorsJSX()}
         <ErrorAlert error={apiError} />
-        <ErrorAlert error={setReservationError} />
+        {/* <ErrorAlert error={setReservationError} /> */}
         <label className="form-label" htmlFor="table_id">
-          Choose table:
+          Choose table or bar seating:
         </label>
         <select
-          className="form-control"
+          className="form-control m-1"
           name="table_id"
           id="table_id"
           value={table_id}
           onChange={handleChange}
         >
-          <option value={0}>Choose a table</option>
+          <option value={0}>Select</option>
           {tableOptions()}
         </select>
 
         <button
           type="submit"
-          className="btn btn-primary"
+          className="btn btn-primary px-4 m-2"
           onClick={handleSubmit}
         >
           Submit
         </button>
         <button
           type="button"
-          className="btn btn-secondary"
+          className="btn btn-secondary px-4 m-2"
           onClick={history.goBack}
         >
           Cancel

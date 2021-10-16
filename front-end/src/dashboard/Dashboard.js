@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { previous, today, next } from "../utils/date-time"; // these functions will give the day before, the day today, and the next day, respectively.
 import { useHistory } from "react-router-dom";
 import ListReservations from "./ListReservations";
 import ListTables from "./ListTables";
+import { listReservations } from "../utils/api";
 
 /**
  * Defines the dashboard page.
@@ -12,11 +13,23 @@ import ListTables from "./ListTables";
  */
 function Dashboard({ date }) {
   const history = useHistory();
+  const [reservations, setReservations] = useState([]);
+  const [reservationsError, setReservationsError] = useState(null);
+
+
+  //useCallback is a hook that stores the variable loadDashboard in memory of the anonymous callback function
+  const loadDashboard = useCallback(() => {
+    const abortController = new AbortController();
+    setReservationsError(null);
+    listReservations({ date }, abortController.signal)
+      .then(setReservations)
+      .catch(setReservationsError);
+    return () => abortController.abort();
+  }, [date]);
 
   return (
     <main>
       <h1>Dashboard</h1>
-
       <button
         type="button"
         className="btn btn-secondary"
@@ -41,11 +54,16 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
-      <ListReservations date={date} />
+      <ListReservations
+        date={date}
+        reservations={reservations}
+        reservationsError={reservationsError}
+        loadDashboard={loadDashboard}
+      />
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Tables</h4>
       </div>
-      <ListTables />
+      <ListTables date={date} />
     </main>
   );
 }
