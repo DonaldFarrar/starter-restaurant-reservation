@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import ErrorAlert from "../layout/ErrorAlert";
+import { listReservations } from "../utils/api";
 
 export default function Search() {
   // this state stores the search input
@@ -6,7 +8,7 @@ export default function Search() {
   // this state will store the search results
   const [reservations, SeatReservations] = useState([]);
   // and, this state, well, stores an error if we get one
-  const [errors, seetErrors] = useState(null);
+  const [errors, setErrors] = useState(null);
 
   const handleChange = ({ target }) => {
     console.log("handle Change");
@@ -16,8 +18,12 @@ export default function Search() {
   const handleFindBtn = (event) => {
     console.log("handle find button");
     event.preventDefault();
-    
-
+    const abortController = new AbortController();
+    setErrors(null);
+    listReservations({mobile_number; mobileNumber}, abortController.signal)
+    .then(setReservations)
+    .catch(setError);
+    return () => abortController.abort();
   };
 
   return (
