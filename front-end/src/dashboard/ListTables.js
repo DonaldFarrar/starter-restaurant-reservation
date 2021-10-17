@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { listTables, finishTable, listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { useHistory } from "react-router-dom";
 
 export default function ListTables({ date }) {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
+  const history = useHistory();
 
   //window.confirm will show a dialogue that willl give an OK button or Cancel button
   const handleFinish = (table_id) => {
@@ -18,6 +20,7 @@ export default function ListTables({ date }) {
       finishTable(table_id, abortController.signal)
         .then(loadTables)
         .then(() => listReservations({ date }, abortController.signal))
+        .then(() => history.push(`/dashboard`))
         .catch(setTablesError);
 
       return () => abortController.abort();
