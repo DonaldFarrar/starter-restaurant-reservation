@@ -10,6 +10,8 @@ export default function ListReservations({
 }) {
   useEffect(loadDashboard, [loadDashboard]);
 
+  // if (!reservations || reservations.status === "finished") return null;
+
   const listOfReservations = reservations.map((reservation, index) => {
     return (
       <tr id={reservation.reservation_id} key={index}>
