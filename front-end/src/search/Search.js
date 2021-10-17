@@ -12,12 +12,12 @@ export default function Search() {
   const [errors, setErrors] = useState(null);
 
   const handleChange = ({ target }) => {
-    console.log("handle Change");
+    //console.log("handle Change");
     setMobileNumber(target.value);
   };
 
   const handleFindBtn = (event) => {
-    console.log("handle find button");
+    //console.log("handle find button");
     event.preventDefault();
     const abortController = new AbortController();
     setErrors(null);
@@ -28,6 +28,8 @@ export default function Search() {
   };
 
   const searchResults = () => {
+    // console.log("ERRORS".reservations);
+    // Used ternary here so we would can return something different if there are no reservations.
     return reservations.length > 0 ? (
       reservations.map((reservation) => (
         <ListReservations
@@ -42,12 +44,15 @@ export default function Search() {
     );
   };
 
+  //   console.log("ERROR");
+
   return (
-    <div>
+    <div className="search form">
       <form>
         <ErrorAlert errors={errors} />
         <label htmlFor="mobile_number">Enter a customer's number:</label>
         <input
+          className="form-control"
           name="mobile_number"
           id="mobile-number"
           type="tel"
