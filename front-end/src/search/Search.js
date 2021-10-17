@@ -1,15 +1,24 @@
 import React, { useState } from "react";
 
 export default function Search() {
-  const [mobileNumber, setMobileNumber] = useState(null);
+  // this state stores the search input
+  const [mobileNumber, setMobileNumber] = useState("");
+  // this state will store the search results
+  const [reservations, SeatReservations] = useState([]);
+  // and, this state, well, stores an error if we get one
+  const [errors, seetErrors] = useState(null);
 
-  const handleChange = () => {
+  const handleChange = ({ target }) => {
     console.log("handle Change");
+    setMobileNumber(target.value);
   };
 
-  const handleFindBtn = () => {
-      console.log("handle find button")
-  }
+  const handleFindBtn = (event) => {
+    console.log("handle find button");
+    event.preventDefault();
+    
+
+  };
 
   return (
     <div>
@@ -23,7 +32,11 @@ export default function Search() {
           value={mobileNumber}
           required
         >
-          <button type="submit" onClick={handleFindBtn}>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={handleFindBtn}
+          >
             Find
           </button>
         </input>
