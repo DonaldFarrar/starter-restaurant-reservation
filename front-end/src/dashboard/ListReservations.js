@@ -8,7 +8,7 @@ export default function ListReservations({
   reservationsError,
   loadDashboard,
 }) {
-  //useEffect(loadDashboard, [loadDashboard]);
+  // useEffect(loadDashboard, [loadDashboard]);
 
   // if (!reservations || reservations.status === "finished") return null;
 

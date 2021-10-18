@@ -113,7 +113,7 @@ export default function NewReservation() {
   return (
     <main>
       <div className="header">
-        <h1>Create A New Reservation</h1>
+        <h1>Create a new reservation</h1>
       </div>
       <div className="d-md-flex mb-3">
         <form>
@@ -212,14 +212,14 @@ export default function NewReservation() {
           <div className="action-buttons">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-secondary m-3"
               onClick={() => history.goBack()}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary m-3"
               onClick={handleSubmit}
             >
               Submit

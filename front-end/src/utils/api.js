@@ -79,7 +79,7 @@ export async function listReservations(params, signal) {
   const data = await fetchJson(url, { headers, signal, method: "GET" }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
-  console.log("data", data);
+
   return data;
 }
 
