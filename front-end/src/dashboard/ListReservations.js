@@ -8,8 +8,9 @@ export default function ListReservations({
   reservationsError,
   loadDashboard,
 }) {
-  
   useEffect(loadDashboard, [loadDashboard]);
+
+  // if (!reservations || reservations.status === "finished") return null;
 
   const listOfReservations = reservations.map((reservation, index) => {
     return (
@@ -25,15 +26,19 @@ export default function ListReservations({
         <td>{reservation.reservation_date}</td>
         <td>{reservation.reservation_time}</td>
         <td>{reservation.people}</td>
-        <td>{reservation.status}</td>
+        <td data-reservation-id-status={reservation.reservation_id}>
+          {reservation.status}
+        </td>
         <td>
-          <Link
-            to={`/reservations/${reservation.reservation_id}/seat`}
-            type="button"
-            className="btn btn-primary px-4"
-          >
-            Seat
-          </Link>
+          {reservation.status === "booked" && (
+            <Link
+              to={`/reservations/${reservation.reservation_id}/seat`}
+              type="button"
+              className="btn btn-primary px-4"
+            >
+              Seat
+            </Link>
+          )}
         </td>
         <td>
           <button type="button" className="btn btn-success px-4">

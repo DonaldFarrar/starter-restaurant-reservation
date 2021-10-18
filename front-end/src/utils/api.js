@@ -68,6 +68,19 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
+// export async function listReservations(params, signal) {
+//   const url = new URL(`${API_BASE_URL}/reservations`);
+//   if (params) {
+//     Object.entries(params).forEach(([key, value]) =>
+//       url.searchParams.append(key, value.toString())
+//     );
+//   }
+
+//   return await fetchJson(url, { headers, signal, method: "GET" }, [])
+//     .then(formatReservationDate)
+//     .then(formatReservationTime);
+// }
+
 //ADDING THE BELOW APIS ALLOWS THE FRONTEND TO CONNECT TO THE BACKEND
 
 export async function listTables(signal) {
