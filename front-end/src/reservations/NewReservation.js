@@ -6,6 +6,7 @@ import {
   readReservation,
   editReservation,
 } from "../utils/api";
+import formatPhoneNumber from "../utils/format-reservation-mobile-number";
 import "./NewReservation.css";
 
 export default function NewReservation() {
@@ -33,7 +34,7 @@ export default function NewReservation() {
             0,
             data.reservation_date.indexOf("T")
           );
-          console.log("data", data);
+
           setFormData(data);
         })
         .catch(setErrorsArray);
@@ -54,29 +55,29 @@ export default function NewReservation() {
     //variable with an empty array to hold all of the errors made if someone tries to book for Tuesday
     const foundErrors = [];
     // if there are errors, we don't want to push the user onto a different page, we want them to stay on this page until the issue is resolved.
+
     if (validateDate(foundErrors) && validateFields(foundErrors)) {
-      history.push(`/dashboard?date=${formData.reservation_date}`);
-    }
-    if (reservation_id) {
-      await editReservation(
-        reservation_id,
-        {
-          ...formData,
-          people: parseInt(formData.people),
-          mobile_number: Number(formData.mobile_number),
-        },
-        abortController.signal
-      )
-        .then(() =>
-          history.push(`/dashboard?date=${formData.reservation_date}`)
+      if (reservation_id) {
+        await editReservation(
+          reservation_id,
+          {
+            ...formData,
+            people: parseInt(formData.people),
+            mobile_number: formatPhoneNumber(formData.mobile_number),
+          },
+          abortController.signal
         )
-        .catch((error) => foundErrors.push(error));
-    } else {
-      await createReservation(formData, abortController.signal)
-        .then(() =>
-          history.push(`/dashboard?date=${formData.reservation_date}`)
-        )
-        .catch((error) => foundErrors.push(error));
+          .then(() =>
+            history.push(`/dashboard?date=${formData.reservation_date}`)
+          )
+          .catch((error) => foundErrors.push(error));
+      } else {
+        await createReservation(formData, abortController.signal)
+          .then(() =>
+            history.push(`/dashboard?date=${formData.reservation_date}`)
+          )
+          .catch((error) => foundErrors.push(error));
+      }
     }
     setErrorsArray(foundErrors);
     //use foundErrors array to see if there is any problems
