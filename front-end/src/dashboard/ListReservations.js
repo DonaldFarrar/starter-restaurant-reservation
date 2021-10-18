@@ -1,22 +1,54 @@
-import React, { useEffect } from "react";
-//import { listReservations } from "../utils/api";
+import React from "react";
+import { updateReservationStatus } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import formatReservationDate from "../utils/format-reservation-date";
 
 export default function ListReservations({
   reservations,
   reservationsError,
   loadDashboard,
 }) {
-  useEffect(loadDashboard, [loadDashboard]);
+  const history = useHistory();
+  // useEffect(loadDashboard, [loadDashboard]);
 
   // if (!reservations || reservations.status === "finished") return null;
+
+  function handleCancel(reservation) {
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone."
+      )
+    ) {
+      const abortController = new AbortController();
+
+      updateReservationStatus(
+        reservation.reservation_id,
+        "cancelled",
+        abortController.status
+      ).then((data) => {
+        const date = formatReservationDate(reservation)
+        console.log("date", date)
+        history.push(
+          `/reservations?date=${date}`
+        );
+        loadDashboard(data);
+      });
+
+      return () => abortController.abort();
+    }
+  }
 
   const listOfReservations = reservations.map((reservation, index) => {
     return (
       <tr id={reservation.reservation_id} key={index}>
         <td>
-          <button type="button" className="btn btn-danger px-4">
+          <button
+            className="btn btn-danger"
+            type="button"
+            onClick={() => handleCancel(reservation)}
+            data-reservation-id-cancel={reservation.reservation_id}
+          >
             Cancel
           </button>
         </td>
@@ -41,16 +73,18 @@ export default function ListReservations({
           )}
         </td>
         <td>
-          <button type="button" className="btn btn-success px-4">
-            Edit
-          </button>
+          <a href={`/reservations/${reservation.reservation_id}/edit`}>
+            <button type="button" className="btn btn-success px-4">
+              Edit
+            </button>
+          </a>
         </td>
       </tr>
     );
   });
-
+  console.log("reservations", reservations);
   return (
-    <div>
+    <>
       <ErrorAlert error={reservationsError} />
       <table className="table no-wrap">
         <thead>
@@ -63,13 +97,12 @@ export default function ListReservations({
             <th className="border-top-0">Reservation Time</th>
             <th className="border-top-0">People</th>
             <th className="border-top-0">Status</th>
-            <th className="border-top-0">Seat Table</th>
             <th className="border-top-0"></th>
             <th className="border-top-0"></th>
           </tr>
         </thead>
         <tbody>{listOfReservations}</tbody>
       </table>
-    </div>
+    </>
   );
 }

@@ -8,6 +8,7 @@ import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import SeatReservations from "../reservations/SeatReservation";
 import Search from "../search/Search";
+//import Edit from "../reservations/Edit";
 
 /**
  * Defines all the routes for the application.
@@ -26,6 +27,9 @@ function Routes() {
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
+      <Route path="/reservations?date=:date">
+        <Dashboard date={date ? date : today()} />
+      </Route>
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
@@ -33,6 +37,9 @@ function Routes() {
         <Dashboard date={date ? date : today()} />
       </Route>
       <Route path="/reservations/new">
+        <NewReservation />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
         <NewReservation />
       </Route>
       <Route path="/tables/new">

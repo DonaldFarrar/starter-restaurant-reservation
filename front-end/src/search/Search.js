@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
+
 import { listReservations } from "../utils/api";
 import ListReservations from "../dashboard/ListReservations";
 
@@ -12,44 +13,35 @@ export default function Search() {
   const [errors, setErrors] = useState(null);
 
   const handleChange = ({ target }) => {
-    //console.log("handle Change");
     setMobileNumber(target.value);
   };
 
   const handleFindBtn = (event) => {
-    //console.log("handle find button");
+    //console.log("mobileNumber", mobileNumber);
     event.preventDefault();
     const abortController = new AbortController();
     setErrors(null);
     listReservations({ mobile_number: mobileNumber }, abortController.signal)
       .then(setReservations)
       .catch(setErrors);
+    //console.log("reservations", reservations);
     return () => abortController.abort();
   };
 
-  const searchResults = () => {
-    // console.log("ERRORS",reservations);
-    // Used ternary here so we would can return something different if there are no reservations.
+  const SearchResults = () => {
     return reservations.length > 0 ? (
-      reservations.map((reservation) => (
-        <ListReservations
-          key={reservation.reservation_id}
-          reservation={reservation}
-        />
-      ))
+      <ListReservations reservations={reservations} />
     ) : (
-      <tr>
-        <td>No Reservation Found</td>
-      </tr>
+      <div>
+        <h1>No reservations found</h1>
+      </div>
     );
   };
 
-  //   console.log("ERROR");
-
   return (
-    <div className="search form">
-      <form>
-        <ErrorAlert errors={errors} />
+    <div>
+      <ErrorAlert errors={errors} />
+      <form className="search form">
         <label htmlFor="mobile_number">Enter a customer's number:</label>
         <input
           className="form-control"
@@ -59,31 +51,16 @@ export default function Search() {
           onChange={handleChange}
           value={mobileNumber}
           required
+        />
+        <button
+          type="submit"
+          className="btn btn-primary m-1"
+          onClick={handleFindBtn}
         >
-          <button
-            type="submit"
-            className="btn btn-primary m-1"
-            onClick={handleFindBtn}
-          >
-            Find
-          </button>
-        </input>
+          Find
+        </button>
       </form>
-      <table className="table">
-        <thead className="thead-light">
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Mobile Number</th>
-            <th scope="col">Time</th>
-            <th scope="col">People</th>
-            <th scope="col">Status</th>
-            <th scope="col">Seat</th>
-          </tr>
-        </thead>
-        <tbody>{searchResults}</tbody>
-      </table>
+      <SearchResults />
     </div>
   );
 }
