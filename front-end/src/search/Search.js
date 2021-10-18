@@ -28,7 +28,7 @@ export default function Search() {
   };
 
   const searchResults = () => {
-    // console.log("ERRORS".reservations);
+    // console.log("ERRORS",reservations);
     // Used ternary here so we would can return something different if there are no reservations.
     return reservations.length > 0 ? (
       reservations.map((reservation) => (
