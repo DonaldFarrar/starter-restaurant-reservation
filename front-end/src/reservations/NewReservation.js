@@ -7,7 +7,6 @@ import {
   editReservation,
 } from "../utils/api";
 import formatPhoneNumber from "../utils/format-reservation-mobile-number";
-import "./NewReservation.css";
 
 export default function NewReservation() {
   const history = useHistory();
