@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import ListReservations from "./ListReservations";
 import ListTables from "./ListTables";
 import { listReservations } from "../utils/api";
+import "./Dashboard.css";
 
 /**
  * Defines the dashboard page.

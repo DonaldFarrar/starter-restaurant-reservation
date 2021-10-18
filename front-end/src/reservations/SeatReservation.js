@@ -9,8 +9,7 @@ export default function SeatReservations() {
   const [table_id, setTableId] = useState(0);
   const [tables, setTables] = useState([]);
   const [reservation, setReservation] = useState(null);
-  const [reservationError, setReservationError] = useState(null);
-  const [tablesError, setTablesError] = useState(null);
+
   const [errors, setErrors] = useState([]);
   const [apiError, setApiError] = useState(null);
 
@@ -18,17 +17,17 @@ export default function SeatReservations() {
 
   function loadTables() {
     const abortController = new AbortController();
-    setTablesError(null);
-    listTables(abortController.signal).then(setTables).catch(setTablesError);
+    setErrors(null);
+    listTables(abortController.signal).then(setTables).catch(setErrors);
     return () => abortController.abort();
   }
 
   useEffect(() => {
     const abortController = new AbortController();
-    setReservationError(null);
+    setErrors(null);
     readReservation(reservation_id, abortController.signal)
       .then(setReservation)
-      .catch(setReservationError);
+      .catch(setErrors);
     return () => abortController.abort();
   }, [reservation_id]);
 
