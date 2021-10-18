@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { updateReservationStatus } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ export default function ListReservations({
   reservationsError,
   loadDashboard,
 }) {
-  useEffect(loadDashboard, [loadDashboard]);
+  //useEffect(loadDashboard, [loadDashboard]);
 
   // if (!reservations || reservations.status === "finished") return null;
 
@@ -73,9 +73,9 @@ export default function ListReservations({
       </tr>
     );
   });
-
+  console.log("reservations", reservations);
   return (
-    <div>
+    <>
       <ErrorAlert error={reservationsError} />
       <table className="table no-wrap">
         <thead>
@@ -88,13 +88,12 @@ export default function ListReservations({
             <th className="border-top-0">Reservation Time</th>
             <th className="border-top-0">People</th>
             <th className="border-top-0">Status</th>
-            <th className="border-top-0">Seat Table</th>
             <th className="border-top-0"></th>
             <th className="border-top-0"></th>
           </tr>
         </thead>
         <tbody>{listOfReservations}</tbody>
       </table>
-    </div>
+    </>
   );
 }

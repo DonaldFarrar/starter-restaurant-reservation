@@ -76,9 +76,11 @@ export async function listReservations(params, signal) {
     );
   }
 
-  return await fetchJson(url, { headers, signal, method: "GET" }, [])
+  const data = await fetchJson(url, { headers, signal, method: "GET" }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+  console.log("data", data);
+  return data;
 }
 
 //ADDING THE BELOW APIS ALLOWS THE FRONTEND TO CONNECT TO THE BACKEND
