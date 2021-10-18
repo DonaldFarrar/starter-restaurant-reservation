@@ -33,8 +33,13 @@ export default function ListReservations({
   const listOfReservations = reservations.map((reservation, index) => {
     return (
       <tr id={reservation.reservation_id} key={index}>
-        <td>
-          <button type="button" className="btn btn-danger px-4">
+          <td>
+          <button
+            className="btn btn-danger"
+            type="button"
+            onClick={handleCancel}
+            data-reservation-id-cancel={reservation.reservation_id}
+          >
             Cancel
           </button>
         </td>
@@ -48,23 +53,6 @@ export default function ListReservations({
           {reservation.status}
         </td>
         <td>
-          <a href={`/reservations/${reservation.reservation_id}/edit`}>
-            <button type="button">Edit</button>
-          </a>
-        </td>
-
-        <td>
-          <button
-            className="btn btn-danger"
-            type="button"
-            onClick={handleCancel}
-            data-reservation-id-cancel={reservation.reservation_id}
-          >
-            Cancel
-          </button>
-        </td>
-
-        <td>
           {reservation.status === "booked" && (
             <Link
               to={`/reservations/${reservation.reservation_id}/seat`}
@@ -76,9 +64,9 @@ export default function ListReservations({
           )}
         </td>
         <td>
-          <button type="button" className="btn btn-success px-4">
-            Edit
-          </button>
+          <a href={`/reservations/${reservation.reservation_id}/edit`}>
+            <button type="button" className="btn btn-success px-4">Edit</button>
+          </a>
         </td>
       </tr>
     );

@@ -75,7 +75,8 @@ export default function Search() {
       <table className="table">
         <thead className="thead-light">
           <tr>
-            <th scope="col">ID</th>
+            {/* <th scope="col">ID</th> */}
+            <th scope="col">Cancel</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Mobile Number</th>
@@ -83,7 +84,6 @@ export default function Search() {
             <th scope="col">People</th>
             <th scope="col">Status</th>
             <th scope="col">Edit</th>
-            <th scope="col">Cancel</th>
             <th scope="col">Seat</th>
           </tr>
         </thead>
