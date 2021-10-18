@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-//import { listReservations } from "../utils/api";
+import { updateReservationStatus } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { Link } from "react-router-dom";
 
@@ -11,6 +11,24 @@ export default function ListReservations({
   useEffect(loadDashboard, [loadDashboard]);
 
   // if (!reservations || reservations.status === "finished") return null;
+
+  function handleCancel() {
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone."
+      )
+    ) {
+      const abortController = new AbortController();
+
+      updateReservationStatus(
+        reservations.reservation_id,
+        "cancelled",
+        abortController.status
+      ).then(loadDashboard);
+
+      return () => abortController.abort();
+    }
+  }
 
   const listOfReservations = reservations.map((reservation, index) => {
     return (
@@ -29,6 +47,23 @@ export default function ListReservations({
         <td data-reservation-id-status={reservation.reservation_id}>
           {reservation.status}
         </td>
+        <td>
+          <a href={`/reservations/${reservation.reservation_id}/edit`}>
+            <button type="button">Edit</button>
+          </a>
+        </td>
+
+        <td>
+          <button
+            className="btn btn-danger"
+            type="button"
+            onClick={handleCancel}
+            data-reservation-id-cancel={reservation.reservation_id}
+          >
+            Cancel
+          </button>
+        </td>
+
         <td>
           {reservation.status === "booked" && (
             <Link

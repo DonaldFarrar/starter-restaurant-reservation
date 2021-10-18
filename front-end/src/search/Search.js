@@ -47,8 +47,11 @@ export default function Search() {
   //   console.log("ERROR");
 
   return (
-    <div className="search form">
-      <form>
+    <div>
+      <div>
+        <h1>Hello</h1>
+      </div>
+      <form className="search form">
         <ErrorAlert errors={errors} />
         <label htmlFor="mobile_number">Enter a customer's number:</label>
         <input
@@ -79,6 +82,8 @@ export default function Search() {
             <th scope="col">Time</th>
             <th scope="col">People</th>
             <th scope="col">Status</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Cancel</th>
             <th scope="col">Seat</th>
           </tr>
         </thead>

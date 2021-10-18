@@ -58,30 +58,47 @@ async function fetchJson(url, options, onCancel) {
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
 
-export async function listReservations(params, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations`);
-  Object.entries(params).forEach(([key, value]) =>
-    url.searchParams.append(key, value.toString())
-  );
-  return await fetchJson(url, { headers, signal }, [])
-    .then(formatReservationDate)
-    .then(formatReservationTime);
-}
-
 // export async function listReservations(params, signal) {
 //   const url = new URL(`${API_BASE_URL}/reservations`);
-//   if (params) {
-//     Object.entries(params).forEach(([key, value]) =>
-//       url.searchParams.append(key, value.toString())
-//     );
-//   }
-
-//   return await fetchJson(url, { headers, signal, method: "GET" }, [])
+//   Object.entries(params).forEach(([key, value]) =>
+//     url.searchParams.append(key, value.toString())
+//   );
+//   return await fetchJson(url, { headers, signal }, [])
 //     .then(formatReservationDate)
 //     .then(formatReservationTime);
 // }
 
+export async function listReservations(params, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations`);
+  if (params) {
+    Object.entries(params).forEach(([key, value]) =>
+      url.searchParams.append(key, value.toString())
+    );
+  }
+
+  return await fetchJson(url, { headers, signal, method: "GET" }, [])
+    .then(formatReservationDate)
+    .then(formatReservationTime);
+}
+
 //ADDING THE BELOW APIS ALLOWS THE FRONTEND TO CONNECT TO THE BACKEND
+
+/**
+ * Edits an existing reservation.
+ */
+export async function editReservation(reservation_id, reservation, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  const body = JSON.stringify({ data: reservation });
+  return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
+}
+/**
+ * Updates a reservation's status.
+ */
+export async function updateReservationStatus(reservation_id, status, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const body = JSON.stringify({ data: { status: status } });
+  return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
+}
 
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`;
